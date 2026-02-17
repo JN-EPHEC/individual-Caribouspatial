@@ -13,7 +13,6 @@ interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
 
 // La classe étend Model en passant les deux interfaces comme génériques
 class User extends Model<UserAttributes, UserCreationAttributes> {
-    // Déclaration des types des attributs pour exploiter TypeScript
     declare id: number;
     declare nom: string;
     declare prenom: string;
