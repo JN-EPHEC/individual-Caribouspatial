@@ -1,6 +1,6 @@
 import express from 'express';
 import userRoutes from './routes/userRoutes'; //import du fichier Typescript dans routes
-
+import sequelize from './config/database'; // import de la DB
 //##########################################################################
 const app = express();
 const port = 3000;
@@ -9,6 +9,16 @@ const etudiants: Etudiant[] = [
     { id: 2, nom: "Martin", prenom: "Sophie" },
     { id: 3, nom: "Doe", prenom: "John" }
 ];
+const startServer = async () => {
+    try {
+        await sequelize.authenticate();
+        console.log('Connexion à la base de données réussie.');
+        await sequelize.sync();
+        console.log('Base de données synchronisée.');
+    } catch (error) {
+        console.error('Impossible de se connecter à la base de données :', error);
+    }
+};
 
 //##########################################################################
 // Interface en TypeScript pour typer les étudiants
@@ -50,4 +60,5 @@ function greet(name : string): string {
 }
 
 //##########################################################################
+startServer();
 console.log(greet("Hello world!"));
