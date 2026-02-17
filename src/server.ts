@@ -1,7 +1,7 @@
 import express from 'express';
 import userRoutes from './routes/userRoutes'; //import du fichier Typescript dans routes
 import sequelize from './config/database'; // import de la DB
-import './models/Users'; // import du modèle Users
+import './models/users'; // import du modèle Users
 //##########################################################################
 const app = express();
 const port = 3000;
