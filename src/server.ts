@@ -1,6 +1,7 @@
 import express from 'express';
 import userRoutes from './routes/userRoutes'; //import du fichier Typescript dans routes
 import sequelize from './config/database'; // import de la DB
+import './models/Users'; // import du modèle Users
 //##########################################################################
 const app = express();
 const port = 3000;
@@ -15,8 +16,12 @@ const startServer = async () => {
         console.log('Connexion à la base de données réussie.');
         await sequelize.sync();
         console.log('Base de données synchronisée.');
+        app.listen(port, () => {
+            console.log(`Serveur lancé sur http://localhost:${port}`);
+        });
     } catch (error) {
         console.error('Impossible de se connecter à la base de données :', error);
+        process.exit(1);
     }
 };
 
@@ -50,9 +55,6 @@ app.get("/api/hello/:name", (req, res) => {
 
 //##########################################################################
 app.use('/api', userRoutes);
-app.listen(port, () => {
-   console.log(`Serveur lancé sur http://localhost:${port}`);
-});
 
 //##########################################################################
 function greet(name : string): string {
