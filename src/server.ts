@@ -1,27 +1,35 @@
 import express from 'express';
+import userRoutes from './routes/userRoutes'; //import du fichier Typescript dans routes
+
+//##########################################################################
 const app = express();
 const port = 3000;
-
-// Interface TypeScript pour typer les étudiants
-interface Etudiant {
-    id: number;
-    nom: string;
-    prenom: string;
-}
 const etudiants: Etudiant[] = [
     { id: 1, nom: "Dupont", prenom: "Jean" },
     { id: 2, nom: "Martin", prenom: "Sophie" },
     { id: 3, nom: "Doe", prenom: "John" }
 ];
+
+//##########################################################################
+// Interface en TypeScript pour typer les étudiants
+interface Etudiant {
+    id: number;
+    nom: string;
+    prenom: string;
+}
+
+//##########################################################################
 //API root
 app.get("/", (req, res) => {
     res.send("Bienvenue sur mon serveur API");
 });
+
 //API tableau étudinat dans /api/data
 app.get("/api/data", (req, res) => {
    res.json(etudiants);
 });
 
+//API qui renvoit le nom dans l'URL et l'instant à la millisecond
 app.get("/api/hello/:name", (req, res) => {
     const { name } = req.params;
     res.json({
@@ -30,13 +38,16 @@ app.get("/api/hello/:name", (req, res) => {
     });
 });
 
+//##########################################################################
+app.use('/api', userRoutes);
 app.listen(port, () => {
    console.log(`Serveur lancé sur http://localhost:${port}`);
 });
 
-
+//##########################################################################
 function greet(name : string): string {
     return name
 }
 
+//##########################################################################
 console.log(greet("Hello world!"));
