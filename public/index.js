@@ -37,12 +37,13 @@ async function supprimerUtilisateur(id) {
 //##########################################################################
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
-
     const nom = inputNom.value.trim();
     const prenom = inputPrenom.value.trim();
 
-    if (!nom || !prenom) return;
-
+    if (!nom || !prenom){
+        alert("Champ nom ou prénom vide !")
+        return;
+    }
     await fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
