@@ -11,22 +11,21 @@ async function getUtilisateurs() {
 //##########################################################################
 function afficherUtilisateurs(users) {
     listeUtilisateurs.innerHTML = '';
-
-    users.forEach(user => {
-        const li = document.createElement('li');
-
-        const nom = document.createElement('span');
-        nom.textContent = `${user.prenom} ${user.nom}`;
-
-        const btnDelete = document.createElement('button');
-        btnDelete.textContent = 'X';
-        btnDelete.classList.add('btn-delete');
-        btnDelete.addEventListener('click', () => supprimerUtilisateur(user.id));
-
-        li.appendChild(nom);
-        li.appendChild(btnDelete);
-        listeUtilisateurs.appendChild(li);
-    });
+    users.forEach(creerElementUtilisateur);
+}
+//##########################################################################
+function creerElementUtilisateur(user) {
+    const nom = document.createElement('span');
+    nom.textContent = `${user.prenom} ${user.nom}`;
+    const btnDelete = document.createElement('button');
+    btnDelete.textContent = 'X';
+    btnDelete.classList.add('btn-delete');
+    btnDelete.dataset.id = user.id;
+    btnDelete.addEventListener('click', supprimerUtilisateur);
+    const li = document.createElement('li');
+    li.appendChild(nom);
+    li.appendChild(btnDelete);
+    listeUtilisateurs.appendChild(li);
 }
 //##########################################################################
 async function supprimerUtilisateur(id) {
