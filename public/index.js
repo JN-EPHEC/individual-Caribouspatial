@@ -2,16 +2,20 @@ const form = document.getElementById('form-ajout');
 const inputNom = document.getElementById('input-nom');
 const inputPrenom = document.getElementById('input-prenom');
 const listeUtilisateurs = document.getElementById('liste-utilisateurs');
-//##########################################################################
-async function getUtilisateurs() {
-    const response = await fetch('/api/users');
-    let users = await response.json();
-    afficherUtilisateurs(users);
-}
+const btnTriNom = document.getElementById('tri-nom');
+const btnTriPrenom = document.getElementById('tri-prenom');
+
+let listeComplete = [];
 //##########################################################################
 function afficherUtilisateurs(users) {
     listeUtilisateurs.innerHTML = '';
     users.forEach(creerElementUtilisateur);
+}
+//##########################################################################
+async function getUtilisateurs() {
+    const response = await fetch('/api/users');
+    listeComplete = await response.json();
+    afficherUtilisateurs(listeComplete);
 }
 //##########################################################################
 function creerElementUtilisateur(user) {
@@ -28,36 +32,39 @@ function creerElementUtilisateur(user) {
     listeUtilisateurs.appendChild(li);
 }
 //##########################################################################
-async function supprimerUtilisateur(id) {
-    await fetch(`/api/users/${id}`, {
-        method: 'DELETE'
-    });
+async function supprimerUtilisateur(event) {
+    const id = event.target.dataset.id;
+    await fetch(`/api/users/${id}`, { method: 'DELETE' });
     getUtilisateurs();
 }
 //##########################################################################
 async function soumettreFormulaire(event) {
     event.preventDefault();
+    let nom = inputNom.value.trim();
+    let prenom = inputPrenom.value.trim();
 
-    const nom = inputNom.value.trim();
-    const prenom = inputPrenom.value.trim();
-
-    if (!nom || !prenom) return;
-
+    if (!nom || !prenom){
+     alert("Champs nom ou prénom vide !")
+    }
     await fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nom, prenom })
     });
-
     inputNom.value = '';
     inputPrenom.value = '';
     getUtilisateurs();
 }
 //##########################################################################
+function comparerParChamp(champ, a, b) {
+    const valA = a[champ] || '';
+    const valB = b[champ] || '';
+    return valA.localeCompare(valB, 'fr', { sensitivity: 'base' });
+}
+
+//##########################################################################
 function trierUtilisateurs(users, champ) {
-    return [...users].sort(function (a, b) {
-        return a[champ].localeCompare(b[champ], 'fr', { sensitivity: 'base' });
-    });
+    return [...users].sort(comparerParChamp.bind(null, champ));
 }
 //##########################################################################
 function trierParNom() {
@@ -77,5 +84,5 @@ function trierParPrenom() {
 form.addEventListener('submit', soumettreFormulaire);
 btnTriNom.addEventListener('click', trierParNom);
 btnTriPrenom.addEventListener('click', trierParPrenom);
-//##########################################################################
+
 getUtilisateurs();
