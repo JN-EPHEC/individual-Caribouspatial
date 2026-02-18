@@ -35,15 +35,14 @@ async function supprimerUtilisateur(id) {
     getUtilisateurs();
 }
 //##########################################################################
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    let nom = inputNom.value.trim();
-    let prenom = inputPrenom.value.trim();
+async function soumettreFormulaire(event) {
+    event.preventDefault();
 
-    if (!nom || !prenom){
-        alert("Champ nom ou prénom vide !")
-        return;
-    }
+    const nom = inputNom.value.trim();
+    const prenom = inputPrenom.value.trim();
+
+    if (!nom || !prenom) return;
+
     await fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -53,6 +52,30 @@ form.addEventListener('submit', async (e) => {
     inputNom.value = '';
     inputPrenom.value = '';
     getUtilisateurs();
-});
+}
+//##########################################################################
+function trierUtilisateurs(users, champ) {
+    return [...users].sort(function (a, b) {
+        return a[champ].localeCompare(b[champ], 'fr', { sensitivity: 'base' });
+    });
+}
+//##########################################################################
+function trierParNom() {
+    const triee = trierUtilisateurs(listeComplete, 'nom');
+    afficherUtilisateurs(triee);
+    btnTriNom.classList.add('actif');
+    btnTriPrenom.classList.remove('actif');
+}
+//##########################################################################
+function trierParPrenom() {
+    const triee = trierUtilisateurs(listeComplete, 'prenom');
+    afficherUtilisateurs(triee);
+    btnTriPrenom.classList.add('actif');
+    btnTriNom.classList.remove('actif');
+}
+//##########################################################################
+form.addEventListener('submit', soumettreFormulaire);
+btnTriNom.addEventListener('click', trierParNom);
+btnTriPrenom.addEventListener('click', trierParPrenom);
 //##########################################################################
 getUtilisateurs();
