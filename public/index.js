@@ -57,8 +57,8 @@ async function soumettreFormulaire(event) {
 }
 //##########################################################################
 function comparerParChamp(champ, a, b) {
-    const valA = a[champ] || '';
-    const valB = b[champ] || '';
+    let valA = a[champ];
+    let valB = b[champ];
     return valA.localeCompare(valB, 'fr', { sensitivity: 'base' });
 }
 
@@ -68,17 +68,13 @@ function trierUtilisateurs(users, champ) {
 }
 //##########################################################################
 function trierParNom() {
-    const triee = trierUtilisateurs(listeComplete, 'nom');
+    let triee = trierUtilisateurs(listeComplete, 'nom');
     afficherUtilisateurs(triee);
-    btnTriNom.classList.add('actif');
-    btnTriPrenom.classList.remove('actif');
 }
 //##########################################################################
 function trierParPrenom() {
-    const triee = trierUtilisateurs(listeComplete, 'prenom');
+    let triee = trierUtilisateurs(listeComplete, 'prenom');
     afficherUtilisateurs(triee);
-    btnTriPrenom.classList.add('actif');
-    btnTriNom.classList.remove('actif');
 }
 //##########################################################################
 form.addEventListener('submit', soumettreFormulaire);
