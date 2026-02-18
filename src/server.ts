@@ -5,6 +5,7 @@ import './models/users'; // import du modèle Users
 //##########################################################################
 const app = express();
 const port = 3000;
+app.use(express.json()); //parse le json
 const etudiants: Etudiant[] = [
     { id: 1, nom: "Dupont", prenom: "Jean" },
     { id: 2, nom: "Martin", prenom: "Sophie" },
