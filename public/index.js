@@ -5,7 +5,7 @@ const listeUtilisateurs = document.getElementById('liste-utilisateurs');
 //##########################################################################
 async function getUtilisateurs() {
     const response = await fetch('/api/users');
-    const users = await response.json();
+    let users = await response.json();
     afficherUtilisateurs(users);
 }
 //##########################################################################
@@ -37,8 +37,8 @@ async function supprimerUtilisateur(id) {
 //##########################################################################
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const nom = inputNom.value.trim();
-    const prenom = inputPrenom.value.trim();
+    let nom = inputNom.value.trim();
+    let prenom = inputPrenom.value.trim();
 
     if (!nom || !prenom){
         alert("Champ nom ou prénom vide !")
