@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path'; // import pour la génération de chemin
 import userRoutes from './routes/userRoutes'; //import du fichier Typescript dans routes
 import sequelize from './config/database'; // import de la DB
 import './models/users'; // import du modèle Users
@@ -6,6 +7,8 @@ import './models/users'; // import du modèle Users
 const app = express();
 const port = 3000;
 app.use(express.json()); //parse le json
+//Rend le dossier "public" statique, rend les fichiers de ce dernier accessible au navigateur
+app.use(express.static(path.join(__dirname, '../public')));
 const etudiants: Etudiant[] = [
     { id: 1, nom: "Dupont", prenom: "Jean" },
     { id: 2, nom: "Martin", prenom: "Sophie" },
@@ -35,7 +38,7 @@ interface Etudiant {
 }
 
 //##########################################################################
-//API root
+//API root (ignoré si index.html existe dans /public)
 app.get("/", (req, res) => {
     res.send("Bienvenue sur mon serveur API");
 });
