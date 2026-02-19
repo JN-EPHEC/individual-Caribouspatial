@@ -2,16 +2,18 @@ const form = document.getElementById('form-ajout');
 const inputNom = document.getElementById('input-nom');
 const inputPrenom = document.getElementById('input-prenom');
 const listeUtilisateurs = document.getElementById('liste-utilisateurs');
-//##########################################################################
-async function getUtilisateurs() {
-    const response = await fetch('/api/users');
-    let users = await response.json();
-    afficherUtilisateurs(users);
-}
+
+let listeComplete = [];
 //##########################################################################
 function afficherUtilisateurs(users) {
     listeUtilisateurs.innerHTML = '';
     users.forEach(creerElementUtilisateur);
+}
+//##########################################################################
+async function getUtilisateurs() {
+    const response = await fetch('/api/users');
+    listeComplete = await response.json();
+    afficherUtilisateurs(listeComplete);
 }
 //##########################################################################
 function creerElementUtilisateur(user) {
@@ -34,24 +36,23 @@ async function supprimerUtilisateur(event) {
     getUtilisateurs();
 }
 //##########################################################################
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+async function soumettreFormulaire(event) {
+    event.preventDefault();
     let nom = inputNom.value.trim();
     let prenom = inputPrenom.value.trim();
 
     if (!nom || !prenom){
-        alert("Champ nom ou prénom vide !")
-        return;
+        alert("Champs nom ou prénom vide !")
     }
     await fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nom, prenom })
     });
-
     inputNom.value = '';
     inputPrenom.value = '';
     getUtilisateurs();
-});
+}
 //##########################################################################
+form.addEventListener('submit', soumettreFormulaire);
 getUtilisateurs();
