@@ -28,10 +28,9 @@ function creerElementUtilisateur(user) {
     listeUtilisateurs.appendChild(li);
 }
 //##########################################################################
-async function supprimerUtilisateur(id) {
-    await fetch(`/api/users/${id}`, {
-        method: 'DELETE'
-    });
+async function supprimerUtilisateur(event) {
+    const id = event.target.dataset.id;
+    await fetch(`/api/users/${id}`, { method: 'DELETE' });
     getUtilisateurs();
 }
 //##########################################################################
