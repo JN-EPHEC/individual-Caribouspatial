@@ -4,7 +4,9 @@ import userRoutes from './routes/userRoutes'; //import du fichier Typescript des
 import sequelize from './config/database'; // import de la DB
 import './models/users'; // import du modèle Users
 import {requestLogger} from "./middlewares/logger";
-import { errorHandler } from "./middlewares/errorHandler"; // import de l'afficheur personalisé d'erreur
+import { errorHandler } from "./middlewares/errorHandler";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger";
 //##########################################################################
 const app = express();
 const port = 3000;
@@ -60,6 +62,7 @@ app.get("/api/hello/:name", (req, res) => {
 });
 
 //##########################################################################
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(requestLogger); // log chaque appel de fonction (doit être avant la déclaration des routes)
 app.use('/api', userRoutes);
 app.use(errorHandler);
