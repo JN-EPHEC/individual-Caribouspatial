@@ -4,6 +4,7 @@ import userRoutes from './routes/userRoutes'; //import du fichier Typescript des
 import sequelize from './config/database'; // import de la DB
 import './models/users'; // import du modèle Users
 import {requestLogger} from "./middlewares/logger";
+import { errorHandler } from "./middlewares/errorHandler"; // import de l'afficheur personalisé d'erreur
 //##########################################################################
 const app = express();
 const port = 3000;
@@ -61,6 +62,7 @@ app.get("/api/hello/:name", (req, res) => {
 //##########################################################################
 app.use(requestLogger); // log chaque appel de fonction (doit être avant la déclaration des routes)
 app.use('/api', userRoutes);
+app.use(errorHandler);
 //##########################################################################
 function greet(name : string): string {
     return name
