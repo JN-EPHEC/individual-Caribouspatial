@@ -1,4 +1,3 @@
-// Fonction à tester (normalement importée depuis votre code)
 const add = (a: number, b: number) => a + b;
 describe('Math Utils', () => {
     it('devrait additionner deux nombres correctement', () => {
