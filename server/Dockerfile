@@ -1,8 +1,9 @@
 FROM node:18-alpine
-WORKDIR /usr/src/app/server/config
-COPY package*.json ./
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+COPY config/package*.json ./
 RUN npm install
-COPY .. .
+COPY . .
 # On compile le TypeScript en JavaScript
 RUN npm run build
 ENV PORT=3000
